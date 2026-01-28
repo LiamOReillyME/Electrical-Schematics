@@ -3,6 +3,7 @@
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Optional, Dict, Any
+from pathlib import Path
 
 
 @dataclass
@@ -40,13 +41,23 @@ class LibraryPart:
     digikey_part_number: Optional[str] = None
     digikey_description: Optional[str] = None
     digikey_url: Optional[str] = None
-    datasheet_url: Optional[str] = None
-    image_url: Optional[str] = None
+    datasheet_url: Optional[str] = None  # Original DigiKey URL
+    image_url: Optional[str] = None  # Original DigiKey URL
     unit_price: Optional[float] = None
     stock_quantity: Optional[int] = None
 
+    # Local asset paths (downloaded files)
+    photo_path: Optional[str] = None  # Local path to downloaded photo
+    datasheet_path: Optional[str] = None  # Local path to downloaded datasheet
+
     # Extended specifications from DigiKey API
     parameters: Dict[str, str] = field(default_factory=dict)
+
+    # Contact configuration (parsed from description)
+    contact_config: Optional[Dict[str, Any]] = None  # ContactConfiguration.to_dict()
+
+    # Dynamic icon (generated SVG)
+    icon_svg: Optional[str] = None  # Generated IEC 60617 symbol
 
     # Metadata
     created_at: datetime = field(default_factory=datetime.now)
@@ -116,6 +127,32 @@ class LibraryPart:
 
         self.updated_at = datetime.now()
 
+    def has_complete_digikey_data(self) -> bool:
+        """Check if part has complete DigiKey data.
+
+        Returns:
+            True if all required DigiKey fields are present
+        """
+        required_fields = [
+            self.digikey_part_number,
+            self.manufacturer,
+            self.description or self.digikey_description,
+            self.category,
+            self.image_url,
+            self.datasheet_url,
+        ]
+        return all(field for field in required_fields) and self.unit_price is not None
+
+    def has_local_assets(self) -> bool:
+        """Check if local assets have been downloaded.
+
+        Returns:
+            True if photo and datasheet paths exist
+        """
+        has_photo = self.photo_path and Path(self.photo_path).exists()
+        has_datasheet = self.datasheet_path and Path(self.datasheet_path).exists()
+        return has_photo and has_datasheet
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for JSON serialization.
 
@@ -138,9 +175,13 @@ class LibraryPart:
             "digikey_url": self.digikey_url,
             "datasheet_url": self.datasheet_url,
             "image_url": self.image_url,
+            "photo_path": self.photo_path,
+            "datasheet_path": self.datasheet_path,
             "unit_price": self.unit_price,
             "stock_quantity": self.stock_quantity,
             "parameters": self.parameters,
+            "contact_config": self.contact_config,
+            "icon_svg": self.icon_svg,
             "created_at": self.created_at.isoformat(),
             "updated_at": self.updated_at.isoformat(),
             "digikey_lookup_attempted": self.digikey_lookup_attempted,
@@ -188,9 +229,13 @@ class LibraryPart:
             digikey_url=data.get("digikey_url"),
             datasheet_url=data.get("datasheet_url"),
             image_url=data.get("image_url"),
+            photo_path=data.get("photo_path"),
+            datasheet_path=data.get("datasheet_path"),
             unit_price=data.get("unit_price"),
             stock_quantity=data.get("stock_quantity"),
             parameters=data.get("parameters", {}),
+            contact_config=data.get("contact_config"),
+            icon_svg=data.get("icon_svg"),
             created_at=created_at,
             updated_at=updated_at,
             digikey_lookup_attempted=data.get("digikey_lookup_attempted", False),

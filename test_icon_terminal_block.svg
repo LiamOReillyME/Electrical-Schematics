@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="350" height="65" viewBox="0 0 350 65">
+<rect width="350" height="65" fill="white" stroke="none"/>
+<circle cx="17" cy="25" r="7" fill="none" stroke="#000000" stroke-width="2"/>
+<text x="17" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#000000">1</text>
+<circle cx="52" cy="25" r="7" fill="none" stroke="#000000" stroke-width="2"/>
+<text x="52" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#000000">2</text>
+<circle cx="87" cy="25" r="7" fill="none" stroke="#000000" stroke-width="2"/>
+<text x="87" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#000000">3</text>
+<circle cx="122" cy="25" r="7" fill="none" stroke="#000000" stroke-width="2"/>
+<text x="122" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#000000">4</text>
+<circle cx="157" cy="25" r="7" fill="none" stroke="#000000" stroke-width="2"/>
+<text x="157" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#000000">5</text>
+<circle cx="192" cy="25" r="7" fill="none" stroke="#000000" stroke-width="2"/>
+<text x="192" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#000000">6</text>
+<circle cx="227" cy="25" r="7" fill="none" stroke="#000000" stroke-width="2"/>
+<text x="227" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#000000">7</text>
+<circle cx="262" cy="25" r="7" fill="none" stroke="#000000" stroke-width="2"/>
+<text x="262" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#000000">8</text>
+<circle cx="297" cy="25" r="7" fill="none" stroke="#000000" stroke-width="2"/>
+<text x="297" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#000000">9</text>
+<circle cx="332" cy="25" r="7" fill="none" stroke="#000000" stroke-width="2"/>
+<text x="332" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#000000">10</text>
+</svg>

@@ -1,6 +1,7 @@
 """DigiKey API client with OAuth2 authentication."""
 
 import time
+import logging
 import requests
 from typing import Optional, List, Dict, Any
 from urllib.parse import urljoin
@@ -14,6 +15,8 @@ from electrical_schematics.api.digikey_models import (
     DigiKeyParameter
 )
 from electrical_schematics.config.settings import DigiKeyConfig
+
+logger = logging.getLogger(__name__)
 
 
 class RateLimiter:
@@ -217,6 +220,85 @@ class DigiKeyClient:
         except Exception as e:
             raise DigiKeyAPIError(f"Error parsing product details: {e}")
 
+    def get_product_details_with_retry(self, part_number: str) -> Optional[DigiKeyProductDetails]:
+        """Get product details with retry logic for hyphenated part numbers.
+
+        First tries the original part number. If that fails, retries without hyphens.
+
+        Args:
+            part_number: Manufacturer part number (may contain hyphens)
+
+        Returns:
+            Product details if found, None otherwise
+        """
+        # Try original part number first
+        logger.info(f"Looking up part: {part_number}")
+        try:
+            result = self.get_product_details(part_number)
+            if result:
+                logger.info(f"Found part: {part_number}")
+                return result
+        except DigiKeyAPIError as e:
+            logger.debug(f"Initial lookup failed for {part_number}: {e}")
+
+        # Retry without hyphens if original had hyphens
+        if '-' in part_number:
+            part_no_hyphens = part_number.replace('-', '')
+            logger.info(f"Retrying without hyphens: {part_no_hyphens}")
+            try:
+                result = self.get_product_details(part_no_hyphens)
+                if result:
+                    logger.info(f"Found part without hyphens: {part_no_hyphens}")
+                    return result
+            except DigiKeyAPIError as e:
+                logger.debug(f"Retry lookup failed for {part_no_hyphens}: {e}")
+
+        logger.warning(f"Part not found: {part_number}")
+        return None
+
+    def validate_complete_data(self, details: Optional[DigiKeyProductDetails]) -> bool:
+        """Validate that product details contain all required fields.
+
+        Required fields:
+        - Manufacturer part number
+        - DigiKey part number
+        - Description
+        - Category
+        - Photo URL
+        - Datasheet URL
+        - Unit price
+
+        Args:
+            details: DigiKey product details to validate
+
+        Returns:
+            True if all required fields are present and non-empty
+        """
+        if not details:
+            return False
+
+        # Check required fields
+        required_checks = [
+            details.manufacturer_part_number,
+            details.part_number,
+            details.description,
+            details.category,
+            details.primary_photo,
+            details.primary_datasheet,
+        ]
+
+        # All required fields must be non-empty strings
+        if not all(field for field in required_checks):
+            logger.warning(f"Missing required fields for {details.manufacturer_part_number}")
+            return False
+
+        # Must have pricing
+        if not details.standard_pricing or len(details.standard_pricing) == 0:
+            logger.warning(f"No pricing data for {details.manufacturer_part_number}")
+            return False
+
+        return True
+
     def search_products(
         self,
         query: str,
@@ -323,7 +405,7 @@ class DigiKeyClient:
             response.raise_for_status()
             return response.content
         except Exception as e:
-            print(f"Failed to download image from {image_url}: {e}")
+            logger.error(f"Failed to download image from {image_url}: {e}")
             return None
 
     def get_datasheet_url(self, part_number: str) -> Optional[str]:
@@ -340,5 +422,5 @@ class DigiKeyClient:
             if details:
                 return details.primary_datasheet
         except Exception as e:
-            print(f"Failed to get datasheet URL: {e}")
+            logger.error(f"Failed to get datasheet URL: {e}")
         return None

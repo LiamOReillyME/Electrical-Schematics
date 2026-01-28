@@ -91,28 +91,37 @@ class DrawerDiagram:
 
         Terminal references can be:
         - Device with terminal block: "-A1-X5:3" -> device is "-A1", terminal is "X5:3"
-        - Device with terminal: "+DG-B1:0V" -> device is "+DG-B1", terminal is "0V"
-        - Simple device: "-K1" -> device is "-K1"
+        - Device with sub-component: "+DG-B1:0V" -> device is "+DG-B1", terminal is "0V"
+        - Simple device: "-K1:13" -> "-K1"
 
-        The pattern is: [+-]DEVICE[-TERMINAL_BLOCK][:PIN]
+        The pattern is: [+-]DEVICE[-SUBDEVICE][-TERMINAL_BLOCK][:PIN]
+
+        Terminal blocks always start with X followed by digits (e.g., X5, X10)
+        Sub-devices are letter+digit (e.g., B1, M1, V1)
 
         Examples:
-            "-A1-X5:3" -> "-A1"
-            "+DG-B1:0V" -> "+DG-B1"
+            "-A1-X5:3" -> "-A1" (exclude X5 terminal block)
+            "+DG-B1:0V" -> "+DG-B1" (include B1 sub-device)
+            "+DG-M1:U1" -> "+DG-M1" (include M1 sub-device)
             "-K1:13" -> "-K1"
         """
-        # Match: [+-] followed by alphanumeric, optionally followed by -X# (terminal block)
-        # Terminal block typically starts with X followed by numbers
-        match = re.match(r'([+-][A-Z0-9]+)(?:-X\d+)?', terminal_ref)
+        # Strategy: Match everything before a terminal block (-X\d+) or before a colon
+        # This allows sub-devices like -B1, -M1, -V1 while excluding terminal blocks like -X5
+
+        # First, try to match device with optional sub-device, stopping before -X\d+ or :
+        # Pattern: [+-][A-Z0-9]+  optionally followed by -[A-Z][0-9]+  before -X or :
+        match = re.match(r'([+-][A-Z0-9]+(?:-[A-WYZ][0-9]+)?)(?:-X\d+|:)?', terminal_ref)
         if match:
             return match.group(1)
 
-        # Fallback: just get the device part before any colon or second dash
-        match = re.match(r'([+-][A-Z0-9]+)', terminal_ref)
-        if match:
-            return match.group(1)
+        # Fallback: just get everything before colon
+        if ':' in terminal_ref:
+            device_part = terminal_ref.split(':')[0]
+            # Remove terminal block suffix if present
+            device_part = re.sub(r'-X\d+$', '', device_part)
+            return device_part
 
-        return ""
+        return terminal_ref
 
     def get_voltage_level(self, terminal_ref: str) -> str:
         """Get voltage level for a terminal reference."""

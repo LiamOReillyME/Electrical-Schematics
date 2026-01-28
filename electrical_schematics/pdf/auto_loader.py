@@ -66,10 +66,14 @@ class DiagramAutoLoader:
     ) -> Tuple[Optional[WiringDiagram], str]:
         """Load and parse a diagram, auto-detecting format.
 
-        Tries multiple strategies:
-        1. Generic parts list extraction
-        2. DRAWER format (legacy)
+        Tries multiple strategies in priority order:
+        1. DRAWER format (provides components + wires + cable routing)
+        2. Generic parts list extraction (provides components only)
         3. Empty diagram for manual annotation
+
+        DRAWER format is prioritized because it provides complete wiring
+        information from cable routing tables, which is essential for
+        simulation and visualization.
 
         Args:
             pdf_path: Path to PDF file
@@ -77,17 +81,19 @@ class DiagramAutoLoader:
 
         Returns:
             Tuple of (WiringDiagram or None, format_type)
-            format_type can be: "parts_list", "drawer", or "manual"
+            format_type can be: "drawer", "parts_list", or "manual"
         """
-        # Strategy 1: Try generic parts list extraction first
-        parts_diagram = DiagramAutoLoader._load_from_parts_list(pdf_path, auto_position)
-        if parts_diagram and len(parts_diagram.components) > 0:
-            return parts_diagram, "parts_list"
-
-        # Strategy 2: Check for DRAWER format (legacy support)
+        # Strategy 1: Check for DRAWER format FIRST (highest priority)
+        # DRAWER format provides both components AND wires from cable routing tables
         format_type = DiagramAutoLoader.detect_format(pdf_path)
         if format_type == "drawer":
             return DiagramAutoLoader._load_drawer(pdf_path, auto_position), "drawer"
+
+        # Strategy 2: Try generic parts list extraction
+        # This only provides components, no wiring information
+        parts_diagram = DiagramAutoLoader._load_from_parts_list(pdf_path, auto_position)
+        if parts_diagram and len(parts_diagram.components) > 0:
+            return parts_diagram, "parts_list"
 
         # Strategy 3: Return empty diagram for manual annotation
         empty_diagram = WiringDiagram(

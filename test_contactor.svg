@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="80" viewBox="0 0 280 80">
+<rect width="280" height="80" fill="white" stroke="none"/>
+<rect x="10" y="10" width="40" height="60" fill="none" stroke="#000000" stroke-width="2"/>
+<text x="30" y="5" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#000000">A1</text>
+<text x="30" y="84" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#000000">A2</text>
+<line x1="85" y1="20" x2="85" y2="60" stroke="#000000" stroke-width="4"/>
+<text x="77" y="25" text-anchor="end" font-family="Arial, sans-serif" font-size="10" fill="#000000">1</text>
+<text x="77" y="60" text-anchor="end" font-family="Arial, sans-serif" font-size="10" fill="#000000">2</text>
+<line x1="135" y1="20" x2="135" y2="60" stroke="#000000" stroke-width="4"/>
+<text x="127" y="25" text-anchor="end" font-family="Arial, sans-serif" font-size="10" fill="#000000">3</text>
+<text x="127" y="60" text-anchor="end" font-family="Arial, sans-serif" font-size="10" fill="#000000">4</text>
+<line x1="185" y1="20" x2="185" y2="60" stroke="#000000" stroke-width="4"/>
+<text x="177" y="25" text-anchor="end" font-family="Arial, sans-serif" font-size="10" fill="#000000">5</text>
+<text x="177" y="60" text-anchor="end" font-family="Arial, sans-serif" font-size="10" fill="#000000">6</text>
+<line x1="235" y1="20" x2="235" y2="33" stroke="#000000" stroke-width="2"/>
+<line x1="235" y1="33" x2="240" y2="41" stroke="#000000" stroke-width="2"/>
+<line x1="235" y1="46" x2="235" y2="60" stroke="#000000" stroke-width="2"/>
+<text x="227" y="25" text-anchor="end" font-family="Arial, sans-serif" font-size="10" fill="#000000">13</text>
+<text x="227" y="60" text-anchor="end" font-family="Arial, sans-serif" font-size="10" fill="#000000">14</text>
+</svg>
