@@ -1,0 +1,217 @@
+Seite
+Seiten
+SH_XP_BCS_B2_REVG
+7350804
+SH-XP Logicontrol
++
+Datum
+CD
+Parts list
+Artikelstückliste
+Änderung
+27
+=
+Name
+001120
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+23.12.2022
+03.05.2021
+19.03.2020
+P.Langhäuser
+T.Blattner
+T.Blattner
+G
+F
+E
+PSI-Penta
+SAP S/4 Hana
+40
+Page
+Seite
+Path
+Pfad
+Device tag
+Betriebsmittelkennzeichen
+Designation
+Bezeichnung
+Parts list
+Artikelstückliste
+Technical data
+Technische Daten
+Type designation
+Typenbezeichnung
+Manufacturer
+Hersteller
+Part number
+Artikelnummer
+ID
+SAP S/4HANA
+UL-Category UL-File
+Number
+Stück
+Siemens
+-K3
+20 1
+AC-3, 5,5KW/400V, 1NC, 24VDC
+3RT2017-1UB42-1AA0
+7255896
+Contactor
+Schütz
+E31519
+1
+Pilz
+-KR1
+20 3
+4NO/6A
+PZE X4V 0,5S
+5233598
+Contact expansion, delayed
+Kontakterweiterung, verzögert
+E153882
+1
+Koch
+-R1
+21 6
+150Ohm 200W
+BWD500150
+3066883
+Resistor
+Widerstand
+E233422
+1
+Koch
+-R2
+21 7
+150Ohm 200W
+BWD500150
+3066883
+Resistor
+Widerstand
+E233422
+1
+Koch
+-R3
+21 8
+150Ohm 200W
+BWD500150
+3066883
+Resistor
+Widerstand
+E233422
+1
+Koch
+-R4
+21 8
+150Ohm 200W
+BWD500150
+3066883
+Resistor
+Widerstand
+E233422
+1
+Nord
+-U1
+21 2
+7,5KW/400VAC 3PH
+SK 520E-751-340-A-KAR
+5792726
+Frequency inverter
+Frequenzumrichter
+E171342
+1
+Schaffner
+-Z1
+21 2
+30A, 3x520/300VAC
+FN3025HL-30-71
+6413165
+EMI-Filter
+EMV-Filter
+E64388
+1
+Schaffner
+-Z2
+21 0
+250VAC/10A 1PH
+FN 2060-10
+3369618
+EMI-Filter
+EMV-Filter
+E64388
+1
+SICK
++DG-B1
+21 6
+5VDC 1024inc A B N RS422
+DFS60E-Z7AZ0-S01
+3369162
+Incremental encoder
+Inkrementalgeber
+E243361
+1
+Nord
++DG-M1
+21 2
+4,8KW (4,0KW) 400VAC Y 50Hz
+SK3282AZ-112M/4 CUS BRE60 SR TW WE
+5711171
+Three-phase motor
+Drehstrommotor
+E191510, E54236
+1
+Nord
++DG-M1
+21 2
+4,8KW (4,0KW) 400VAC Y 50Hz
+SK3282AZ-112M/4 CUS BRE60 SR TW WE
+5977376
+Three-phase motor
+Drehstrommotor
+E191510, E54236
+1
+Nord
++DG-M1
+21 2
+4,8KW (4,0KW) 400VAC Y 50Hz
+SK4282AZ-112MH/4 CUS BRE60 SR TW WE
+6396378
+Three-phase motor
+Drehstrommotor
+E191510, E54236
+1
+Nord
++DG-V1
+21 0
+230VAC, 205VDC
+19140140
+1267111
+Brake rectifier
+Bremsgleichrichter
+E171342
+1
+10001367
+10001046
+10001046
+10001046
+10001046
+10001322
+10001372
+10001085
+10004202
+10004203
+10004204
+10001519
+10001377
+10001232
+1435/86 1/min i16,67
+1435/67 1/min i21,38
+1420/44 1/min i32,34

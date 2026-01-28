@@ -1,0 +1,312 @@
+Seite
+Seiten
+SH_XP_BCS_B2_REVG
+7350804
+SH-XP Logicontrol
++
+Datum
+CD
+Parts list
+Artikelstückliste
+Änderung
+26
+=
+Name
+001120
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+23.12.2022
+03.05.2021
+19.03.2020
+P.Langhäuser
+T.Blattner
+T.Blattner
+G
+F
+E
+PSI-Penta
+SAP S/4 Hana
+40
+Page
+Seite
+Path
+Pfad
+Device tag
+Betriebsmittelkennzeichen
+Designation
+Bezeichnung
+Parts list
+Artikelstückliste
+Technical data
+Technische Daten
+Type designation
+Typenbezeichnung
+Manufacturer
+Hersteller
+Part number
+Artikelnummer
+ID
+SAP S/4HANA
+UL-Category UL-File
+Number
+Stück
+Saia Burgess
+-A1
+18 0
+24VDC 24xD-IN 8xD-OUT 4xCO
+PCD3.M9K47
+6223994
+Control
+Steuerung
+1xSR CAN ETH Encoder-IN Encoder-OUT
+E160970
+1
+Sinwan
+-EL1
+15 5
+150-260VAC 0,072-0,062A 50-60Hz
+S938AP-22-1 TB GRM92-45
+1460351
+Fan
+Lüfter
+11W
+E89520
+1
+Sinwan
+-EL2
+15 6
+150-260VAC 0,072-0,062A 50-60Hz
+S938AP-22-1 TB GRM92-45
+1460351
+Fan
+Lüfter
+11W
+E89520
+1
+Allen Bradley
+-F2
+15 2
+230VAC 6A B SCCR10kA 1pole
+1492-SP1B060
+6305320
+Automatic circuit breaker
+Sicherungsautomat
+1-Polig
+E65138
+1
+Allen Bradley
+-F3
+15 3
+230VAC 10A C SCCR10kA 1pole
+1492-SPM1C100
+6305189
+Circuit breaker
+Sicherungsautomat
+1-Polig
+E65138
+1
+Allen Bradley
+-F4
+16 1
+230VAC 2A C SCCR10kA 1pole
+1492-SPM1C020
+6305312
+Circuit breaker
+Sicherungsautomat
+1-Polig
+E65138
+1
+Allen Bradley
+-F5
+16 1
+230VAC 4A C SCCR10kA 1pole
+1492-SPM1C040
+6309413
+Circuit breaker
+Sicherungsautomat
+1-Polig
+E65138
+1
+Allen Bradley
+-F6
+16 1
+230VAC 4A C SCCR10kA 1pole
+1492-SPM1C040
+6309413
+Circuit breaker
+Sicherungsautomat
+1-Polig
+E65138
+1
+Allen Bradley
+-F7
+22 0
+400VAC 10A C SCCR10kA 3pole
+1492-SPM3C100
+6311047
+Circuit breaker
+Sicherungsautomat
+3-Polig
+E65138
+1
+PHOENIX CONTACT
+-G1
+16 1
+24VDC/5A 1PH 85-264VAC 45-65Hz
+TRIO-PS/1AC/24DC/ 5
+6305411
+Power supply unit
+Stromversorgung
+E211944
+1
+PHOENIX CONTACT
+-K0.2
+16 7
+24 VDC 1x NO/NC
+RIF-0-RPT-24DC/21AU
+6787550
+Relay module
+Relaismodul
+E172140
+1
+Siemens
+-K1
+19 7
+AC-3, 11KW/400V, 1NO/1NC, 24VDV
+3RT2026-1DB40-1AAO
+7255961
+Contactor
+Schütz
+E31519
+1
+Siemens
+-K1
+19 7
+4NO
+3RH2911-1XA40-0MA0
+7215585
+Auxiliary block
+Hilfsblock
+E31519
+1
+Siemens
+-K1.0
+19 1
+AC-3, 11KW/400V, 1NO/1NC, 24VDV
+3RT2026-1DB40-1AAO
+7255961
+Contactor
+Schütz
+E31519
+1
+Siemens
+-K1.1
+19 2
+AC-3, 11KW/400V, 1NO/1NC, 24VDV
+3RT2026-1DB40-1AAO
+7255961
+Contactor
+Schütz
+E31519
+1
+Siemens
+-K1.1
+19 2
+2NO, 2NC
+3RH2911-1XA22-0MA0
+7215577
+Auxiliary block
+Hilfsblock
+E31519
+1
+Siemens
+-K1.2
+19 4
+AC-3, 5,5KW/400V, 1NC, 24VDC
+3RT2017-1UB42-1AA0
+7255896
+Contactor
+Schütz
+E31519
+1
+Siemens
+-K1.2
+19 4
+2NO, 2NC
+3RH2911-1XA22-0MA0
+7215577
+Auxiliary block
+Hilfsblock
+E31519
+1
+Siemens
+-K1.3
+19 6
+AC-3, 5,5KW/400V, 1NC, 24VDC
+3RT2017-1UB42-1AA0
+7255896
+Contactor
+Schütz
+E31519
+1
+Siemens
+-K1.3
+19 6
+4NO
+3RH2911-1XA40-0MA0
+7215585
+Auxiliary block
+Hilfsblock
+E31519
+1
+Siemens
+-K2
+19 3
+AC-3, 5,5KW/400V, 1NC, 24VDC
+3RT2017-1UB42-1AA0
+7255896
+Contactor
+Schütz
+E31519
+1
+Siemens
+-K2
+19 3
+2NO, 2NC
+3RH2911-1XA22-0MA0
+7215577
+Auxiliary block
+Hilfsblock
+E31519
+1
+10001395
+10001346
+10001346
+10001419
+10001420
+10001417
+10001418
+10001418
+10001421
+10001413
+10001330
+10001368
+10001365
+10001368
+10001368
+10001364
+10001367
+10001364
+10001367
+10001365
+10001367
+10001364
+AgSnO
