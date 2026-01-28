@@ -400,17 +400,24 @@ class PDFViewer(QWidget):
         )
 
         # Draw terminal points
-        self._draw_terminals(painter, overlay.component, rect)
+        self._draw_terminals(painter, overlay.component)
 
-    def _draw_terminals(self, painter: QPainter, component: IndustrialComponent, rect: QRectF) -> None:
+    def _draw_terminals(self, painter: QPainter, component: IndustrialComponent) -> None:
         """Draw terminal points for a component.
 
         Args:
             painter: Qt painter
             component: Component to draw terminals for
-            rect: Screen coordinates rectangle
         """
-        terminals = self._get_terminal_positions(component, rect)
+        # BUGFIX: Get PDF coordinates for terminals, then convert to screen
+        pdf_terminals = self._get_terminal_positions_pdf(component)
+
+        # Convert to screen coordinates
+        screen_terminals = []
+        for pdf_term in pdf_terminals:
+            screen_x = pdf_term.x() * self.zoom_level * 2
+            screen_y = pdf_term.y() * self.zoom_level * 2
+            screen_terminals.append(QPointF(screen_x, screen_y))
 
         # Draw terminal circles with better visibility
         terminal_radius = max(3, 4 * self.zoom_level)  # Scale with zoom, minimum 3
@@ -418,40 +425,42 @@ class PDFViewer(QWidget):
         # Draw outer circle (dark border)
         painter.setBrush(Qt.NoBrush)
         painter.setPen(QPen(QColor(0, 0, 0, 200), 2))
-        for terminal_pos in terminals:
+        for terminal_pos in screen_terminals:
             painter.drawEllipse(terminal_pos, terminal_radius + 1, terminal_radius + 1)
 
         # Draw inner circle (yellow fill)
         painter.setBrush(QBrush(QColor(255, 230, 0, 255)))  # Brighter yellow
         painter.setPen(QPen(QColor(200, 180, 0), 1))
-        for terminal_pos in terminals:
+        for terminal_pos in screen_terminals:
             painter.drawEllipse(terminal_pos, terminal_radius, terminal_radius)
 
-    def _get_terminal_positions(self, component: IndustrialComponent, rect: QRectF) -> List[QPoint]:
-        """Calculate terminal positions for a component.
+    def _get_terminal_positions_pdf(self, component: IndustrialComponent) -> List[QPointF]:
+        """Calculate terminal positions for a component in PDF coordinates.
+
+        BUGFIX: This method calculates terminals directly in PDF coordinates,
+        avoiding the double-conversion bug.
 
         Args:
             component: Component to get terminals for
-            rect: Screen coordinates rectangle
 
         Returns:
-            List of terminal positions (QPoint)
+            List of terminal positions in PDF coordinates
         """
         from electrical_schematics.models import IndustrialComponentType
 
         terminals = []
-        center_x = rect.center().x()
-        center_y = rect.center().y()
+        center_x = component.x + component.width / 2
+        center_y = component.y + component.height / 2
 
-        # Define terminal positions based on component type
+        # Define terminal positions based on component type (in PDF coords)
         component_type = component.type
 
         if component_type in [IndustrialComponentType.CONTACTOR, IndustrialComponentType.RELAY]:
             # Contactors/Relays: coil terminals on left, contact terminals on right
-            terminals.append(QPoint(int(rect.left() + 10), int(center_y - 10)))
-            terminals.append(QPoint(int(rect.left() + 10), int(center_y + 10)))
-            terminals.append(QPoint(int(rect.right() - 10), int(center_y - 10)))
-            terminals.append(QPoint(int(rect.right() - 10), int(center_y + 10)))
+            terminals.append(QPointF(component.x + 10, center_y - 10))
+            terminals.append(QPointF(component.x + 10, center_y + 10))
+            terminals.append(QPointF(component.x + component.width - 10, center_y - 10))
+            terminals.append(QPointF(component.x + component.width - 10, center_y + 10))
 
         elif component_type in [
             IndustrialComponentType.PROXIMITY_SENSOR,
@@ -461,32 +470,32 @@ class PDFViewer(QWidget):
             IndustrialComponentType.TEMPERATURE_SENSOR
         ]:
             # Sensors: power on left, output on right
-            terminals.append(QPoint(int(rect.left() + 10), int(center_y - 10)))
-            terminals.append(QPoint(int(rect.left() + 10), int(center_y + 10)))
-            terminals.append(QPoint(int(rect.right() - 10), int(center_y)))
+            terminals.append(QPointF(component.x + 10, center_y - 10))
+            terminals.append(QPointF(component.x + 10, center_y + 10))
+            terminals.append(QPointF(component.x + component.width - 10, center_y))
 
         elif component_type in [IndustrialComponentType.POWER_24VDC, IndustrialComponentType.POWER_400VAC]:
             # Power supplies: positive/L on top, negative/N on bottom
-            terminals.append(QPoint(int(center_x), int(rect.top() + 10)))
-            terminals.append(QPoint(int(center_x), int(rect.bottom() - 10)))
+            terminals.append(QPointF(center_x, component.y + 10))
+            terminals.append(QPointF(center_x, component.y + component.height - 10))
 
         elif component_type == IndustrialComponentType.MOTOR:
             # Motors: three-phase terminals at top
-            terminals.append(QPoint(int(center_x - 15), int(rect.top() + 10)))
-            terminals.append(QPoint(int(center_x), int(rect.top() + 10)))
-            terminals.append(QPoint(int(center_x + 15), int(rect.top() + 10)))
+            terminals.append(QPointF(center_x - 15, component.y + 10))
+            terminals.append(QPointF(center_x, component.y + 10))
+            terminals.append(QPointF(center_x + 15, component.y + 10))
 
         elif component_type in [IndustrialComponentType.PLC_INPUT, IndustrialComponentType.PLC_OUTPUT]:
             # PLC modules: terminals along left edge
             num_terminals = 8
-            spacing = rect.height() / (num_terminals + 1)
+            spacing = component.height / (num_terminals + 1)
             for i in range(num_terminals):
-                terminals.append(QPoint(int(rect.left() + 10), int(rect.top() + spacing * (i + 1))))
+                terminals.append(QPointF(component.x + 10, component.y + spacing * (i + 1)))
 
         else:
             # Default: two terminals on left and right
-            terminals.append(QPoint(int(rect.left() + 10), int(center_y)))
-            terminals.append(QPoint(int(rect.right() - 10), int(center_y)))
+            terminals.append(QPointF(component.x + 10, center_y))
+            terminals.append(QPointF(component.x + component.width - 10, center_y))
 
         return terminals
 
@@ -566,28 +575,18 @@ class PDFViewer(QWidget):
     def _get_all_terminal_positions(self) -> Dict[str, List[QPointF]]:
         """Get terminal positions for all components in PDF coordinates.
 
+        BUGFIX: Completely rewritten to calculate terminals directly in PDF coordinates
+        instead of converting from screen coordinates.
+
         Returns:
-            Dict mapping component_id to list of terminal positions
+            Dict mapping component_id to list of terminal positions (PDF coords)
         """
         terminal_positions = {}
 
         for overlay in self.component_overlays:
             if overlay.page == self.current_page:
-                rect = QRectF(
-                    overlay.rect.x() * self.zoom_level * 2,
-                    overlay.rect.y() * self.zoom_level * 2,
-                    overlay.rect.width() * self.zoom_level * 2,
-                    overlay.rect.height() * self.zoom_level * 2
-                )
-
-                screen_terminals = self._get_terminal_positions(overlay.component, rect)
-
-                pdf_terminals = []
-                for term_pos in screen_terminals:
-                    pdf_x = term_pos.x() / (self.zoom_level * 2)
-                    pdf_y = term_pos.y() / (self.zoom_level * 2)
-                    pdf_terminals.append(QPointF(pdf_x, pdf_y))
-
+                # Calculate terminals based on component's PDF position directly
+                pdf_terminals = self._get_terminal_positions_pdf(overlay.component)
                 terminal_positions[overlay.component.id] = pdf_terminals
 
         return terminal_positions

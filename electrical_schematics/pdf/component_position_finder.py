@@ -7,6 +7,18 @@ device tag labels (e.g., "-K1", "+DG-M1", "-A1").
 Includes page classification to skip non-schematic pages (cover sheets,
 table of contents, cable diagrams, parts lists, etc.) and multi-page
 support for components that appear on more than one page.
+
+IMPORTANT: This finder locates actual device tags in schematic pages, not
+diagram annotations or cross-references. Device tags follow industrial
+naming conventions:
+- Control panel devices: -K1, -A1, -F2 (prefix: -)
+- Field devices: +DG-M1, +DG-B1, +DG-V1 (prefix: +)
+
+Generic labels (CD, E, F, G), numbers (0-9), wire colors (BN, WH), and
+cross-references (K2:61/19.9) are NOT device tags and will be filtered out.
+
+Block diagram pages, parts lists, and cable routing tables are automatically
+skipped based on page title classification.
 """
 
 import re
@@ -187,6 +199,34 @@ def should_skip_page_by_title(page_title: str) -> bool:
     return False
 
 
+def is_cross_reference(text: str) -> bool:
+    """Check if text is a cross-reference that should be filtered out.
+
+    Cross-references appear in electrical schematics to indicate where a
+    component appears on other pages. They have format:
+    - TAG:PAGE/COORDINATE (e.g., "K2:61/19.9" means K2 is on page 61)
+    - Appear with small arrows pointing to wire connections
+    - Should NOT be treated as component locations
+
+    NOTE: We only use pattern matching, not color-based filtering, because
+    actual device tags are also rendered in blue in many schematic formats.
+
+    Args:
+        text: Text content extracted from PDF
+
+    Returns:
+        True if text is a cross-reference and should be filtered
+    """
+    if not text:
+        return False
+
+    # Pattern: TAG:PAGE/COORDINATE (e.g., "K2:61/19.9", "-K3:20/15.3")
+    # This pattern requires a slash after the colon, which distinguishes it
+    # from terminal references like "-K1:13" or "-A1-X5:3"
+    cross_ref_pattern = r'^[A-Z0-9+-]+:\d+/[\d.]+$'
+    return bool(re.match(cross_ref_pattern, text))
+
+
 class ComponentPositionFinder:
     """Find component positions in PDF schematics by locating device tag text.
 
@@ -195,6 +235,12 @@ class ComponentPositionFinder:
     - Standard: -K1, -A1, -F2
     - Field devices: +DG-M1, +DG-B1, +CD-V1
     - Terminal references: -A1-X5:3, +DG-B1:0V
+
+    Filters out non-device-tag text:
+    - Generic labels (CD, E, F, G)
+    - Numbers (0-9)
+    - Wire colors (BN, WH, GNYE)
+    - Cross-references (K2:61/19.9)
 
     Page filtering:
     - Automatically classifies each page by reading the title block
@@ -522,6 +568,8 @@ class ComponentPositionFinder:
     ) -> Dict[str, List[ComponentPosition]]:
         """Extract component positions from a single page.
 
+        Filters out cross-references and non-device-tag text.
+
         Args:
             page_num: Page number to search
             tag_set: Set of canonical device tags to find
@@ -547,6 +595,10 @@ class ComponentPositionFinder:
                 for span in line.get("spans", []):
                     text = span.get("text", "").strip()
                     bbox = span.get("bbox", (0, 0, 0, 0))
+
+                    # Skip cross-references (TAG:PAGE/COORDINATE format)
+                    if is_cross_reference(text):
+                        continue
 
                     # Try to match this text to a device tag
                     matched_tag = self._match_text_to_tag(text, tag_set, tag_variants)
@@ -720,6 +772,10 @@ class ComponentPositionFinder:
                     for span in line.get("spans", []):
                         text = span.get("text", "").strip()
                         bbox = span.get("bbox", (0, 0, 0, 0))
+
+                        # Skip cross-references
+                        if is_cross_reference(text):
+                            continue
 
                         # Check if text looks like a device tag
                         if self.DEVICE_TAG_PATTERN.match(text):

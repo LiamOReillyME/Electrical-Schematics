@@ -42,7 +42,8 @@ class WireDrawingTool(QObject):
         self.current_cursor_pos: Optional[QPointF] = None
 
         # Terminal detection radius (in PDF coordinates)
-        self.terminal_radius = 10.0
+        # BUGFIX: Increased from 10.0 to 20.0 for easier clicking
+        self.terminal_radius = 20.0
 
     def set_wire_type(self, wire_type: WireType) -> None:
         """Set the current wire type.

@@ -102,6 +102,21 @@ class SettingsManager:
         )
         self.save_settings()
 
+    def get_digikey_config(self) -> DigiKeyConfig:
+        """Get DigiKey API configuration.
+
+        Returns:
+            DigiKeyConfig object with credentials and tokens.
+            If not configured, returns an empty DigiKeyConfig with empty strings.
+
+        Raises:
+            ValueError: If DigiKey credentials are not configured
+        """
+        if self.settings.digikey is None:
+            # Return empty config to allow graceful error handling
+            return DigiKeyConfig(client_id="", client_secret="")
+        return self.settings.digikey
+
     def update_digikey_tokens(
         self,
         access_token: str,
