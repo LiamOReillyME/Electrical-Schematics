@@ -10,6 +10,7 @@ from electrical_schematics.models import (
     Wire,
     WiringDiagram,
 )
+from electrical_schematics.models.wire import WirePoint
 from electrical_schematics.pdf.drawer_parser import (
     CableConnection,
     DeviceInfo,
@@ -57,7 +58,138 @@ class DrawerToModelConverter:
                 drawer_diagram.pdf_path
             )
 
+            # BUGFIX: Generate wire paths after component positions are known
+            # This ensures wires can be rendered in the GUI
+            DrawerToModelConverter.generate_wire_paths(wiring_diagram)
+
         return wiring_diagram
+
+    @staticmethod
+    def generate_wire_paths(
+        diagram: WiringDiagram,
+        routing_style: str = "manhattan"
+    ) -> int:
+        """Generate visual paths for all wires in the diagram.
+
+        Creates wire paths connecting component positions using the specified
+        routing style. Only generates paths for wires where both endpoints
+        have known positions.
+
+        Args:
+            diagram: WiringDiagram with wires and positioned components
+            routing_style: Routing style ("manhattan", "straight", "l_path")
+
+        Returns:
+            Number of wires that got paths generated
+        """
+        generated_count = 0
+
+        # Create component position lookup
+        component_positions = {}
+        for comp in diagram.components:
+            # Check if component has a valid position
+            if comp.x != 0 or comp.y != 0 or comp.page_positions:
+                # Use primary position
+                component_positions[comp.id] = {
+                    'x': comp.x,
+                    'y': comp.y,
+                    'width': comp.width,
+                    'height': comp.height,
+                    'page': comp.page
+                }
+
+        # Generate paths for each wire
+        for wire in diagram.wires:
+            # Skip if wire already has a path
+            if wire.path and len(wire.path) > 0:
+                continue
+
+            # Get endpoint positions
+            from_pos = component_positions.get(wire.from_component_id)
+            to_pos = component_positions.get(wire.to_component_id)
+
+            # Skip if either endpoint is missing
+            if not from_pos or not to_pos:
+                continue
+
+            # Calculate center points of components
+            from_x = from_pos['x'] + from_pos['width'] / 2
+            from_y = from_pos['y'] + from_pos['height'] / 2
+            to_x = to_pos['x'] + to_pos['width'] / 2
+            to_y = to_pos['y'] + to_pos['height'] / 2
+
+            # Generate path based on routing style
+            if routing_style == "manhattan":
+                wire.path = DrawerToModelConverter._generate_manhattan_path(
+                    from_x, from_y, to_x, to_y
+                )
+            elif routing_style == "l_path":
+                wire.path = DrawerToModelConverter._generate_l_path(
+                    from_x, from_y, to_x, to_y
+                )
+            else:  # straight
+                wire.path = [
+                    WirePoint(from_x, from_y),
+                    WirePoint(to_x, to_y)
+                ]
+
+            generated_count += 1
+
+        return generated_count
+
+    @staticmethod
+    def _generate_manhattan_path(
+        x1: float, y1: float,
+        x2: float, y2: float
+    ) -> List[WirePoint]:
+        """Generate Manhattan (orthogonal) path between two points.
+
+        Args:
+            x1, y1: Start point
+            x2, y2: End point
+
+        Returns:
+            List of WirePoint forming Manhattan path
+        """
+        # Calculate midpoint
+        mid_x = (x1 + x2) / 2
+
+        return [
+            WirePoint(x1, y1),       # Start
+            WirePoint(mid_x, y1),    # Horizontal segment
+            WirePoint(mid_x, y2),    # Vertical segment
+            WirePoint(x2, y2)        # End
+        ]
+
+    @staticmethod
+    def _generate_l_path(
+        x1: float, y1: float,
+        x2: float, y2: float
+    ) -> List[WirePoint]:
+        """Generate L-shaped path between two points.
+
+        Args:
+            x1, y1: Start point
+            x2, y2: End point
+
+        Returns:
+            List of WirePoint forming L-shaped path
+        """
+        # Choose L-bend direction based on relative positions
+        if abs(x2 - x1) > abs(y2 - y1):
+            # Horizontal-first L
+            return [
+                WirePoint(x1, y1),
+                WirePoint(x2, y1),
+                WirePoint(x2, y2)
+            ]
+        else:
+            # Vertical-first L
+            return [
+                WirePoint(x1, y1),
+                WirePoint(x1, y2),
+                WirePoint(x2, y2)
+            ]
 
     @staticmethod
     def populate_component_positions(

@@ -506,13 +506,22 @@ class PDFViewer(QWidget):
             painter: Qt painter
         """
         for wire in self.wires:
+            # BUGFIX: Skip wires without valid paths
+            if not wire.path or len(wire.path) < 2:
+                continue
+
             # Determine color based on voltage level
-            if "24" in wire.voltage_level or "24VDC" in wire.voltage_level:
-                color = QColor(231, 76, 60)  # Red for 24VDC
-            elif "0V" in wire.voltage_level or wire.voltage_level == "0V":
-                color = QColor(52, 152, 219)  # Blue for 0V
-            elif "AC" in wire.voltage_level:
-                color = QColor(44, 62, 80)  # Dark gray for AC
+            if wire.voltage_level:
+                if "24" in wire.voltage_level or "24VDC" in wire.voltage_level:
+                    color = QColor(231, 76, 60)  # Red for 24VDC
+                elif "5V" in wire.voltage_level or "5VDC" in wire.voltage_level:
+                    color = QColor(255, 165, 0)  # Orange for 5VDC
+                elif "0V" in wire.voltage_level or wire.voltage_level == "0V":
+                    color = QColor(52, 152, 219)  # Blue for 0V/ground
+                elif "AC" in wire.voltage_level or "400VAC" in wire.voltage_level:
+                    color = QColor(44, 62, 80)  # Dark gray for AC
+                else:
+                    color = QColor(149, 165, 166)  # Gray for unknown
             else:
                 color = QColor(149, 165, 166)  # Gray for unknown
 

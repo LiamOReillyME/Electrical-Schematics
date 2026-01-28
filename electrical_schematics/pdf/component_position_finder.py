@@ -235,6 +235,7 @@ class ComponentPositionFinder:
     - Standard: -K1, -A1, -F2
     - Field devices: +DG-M1, +DG-B1, +CD-V1
     - Terminal references: -A1-X5:3, +DG-B1:0V
+    - Contact instances: -K1.1, -K1.2, -K1.3
 
     Filters out non-device-tag text:
     - Generic labels (CD, E, F, G)
@@ -252,6 +253,10 @@ class ComponentPositionFinder:
     - The best position (highest confidence) is stored in positions dict
     - All positions are stored in ambiguous_matches for multi-page overlay support
 
+    Contact positioning:
+    - Detects contact instances using .1, .2, .3 suffixes (e.g., -K1.1, -K1.2)
+    - Maps contact suffixes to contact blocks for proper symbol rendering
+
     Example:
         >>> finder = ComponentPositionFinder("/path/to/schematic.pdf")
         >>> result = finder.find_positions(["-K1", "-K2", "+DG-M1"])
@@ -261,11 +266,18 @@ class ComponentPositionFinder:
         >>> if "-K1" in result.ambiguous_matches:
         ...     for pos in result.ambiguous_matches["-K1"]:
         ...         print(f"  Page {pos.page}: ({pos.x}, {pos.y})")
+        >>> # Find contact positions
+        >>> contact_positions = finder.find_contact_positions("-K1")
+        >>> for suffix, positions in contact_positions.items():
+        ...     print(f"Contact {suffix}: {len(positions)} positions")
         >>> finder.close()
     """
 
     # Patterns for device tag recognition
     DEVICE_TAG_PATTERN = re.compile(r'^[+-][A-Z0-9]+(?:-[A-Z0-9]+)?(?::\S+)?$')
+
+    # Pattern for contact instance references (e.g., -K1.1, -K1.2)
+    CONTACT_INSTANCE_PATTERN = re.compile(r'^([+-][A-Z0-9]+(?:-[A-Z0-9]+)?)\.(\d+)$')
 
     # Pages typically containing schematic diagrams (before cable/parts lists)
     DEFAULT_SCHEMATIC_PAGE_RANGE = (0, 25)
@@ -439,6 +451,91 @@ class ComponentPositionFinder:
 
         return result
 
+    def find_contact_positions(
+        self,
+        device_tag: str,
+        page_range: Optional[Tuple[int, int]] = None
+    ) -> Dict[str, List[ComponentPosition]]:
+        """Find positions of contact instances for a relay/contactor.
+
+        For device -K1, searches for:
+        - -K1.1 (first contact)
+        - -K1.2 (second contact)
+        - -K1.3 (third contact)
+        etc.
+
+        Args:
+            device_tag: The relay/contactor device tag (e.g., "-K1", "-K2")
+            page_range: Optional (start, end) page range. If None, uses schematic_pages.
+
+        Returns:
+            Dictionary mapping contact suffix to list of positions:
+            {'.1': [pos1, pos2, ...], '.2': [...], '.3': [...]}
+
+        Example:
+            >>> finder = ComponentPositionFinder("schematic.pdf")
+            >>> contacts = finder.find_contact_positions("-K1")
+            >>> for suffix, positions in contacts.items():
+            ...     print(f"Contact {suffix}:")
+            ...     for pos in positions:
+            ...         print(f"  Page {pos.page}: ({pos.x}, {pos.y})")
+        """
+        if not self.doc:
+            raise RuntimeError("PDF document not open")
+
+        # Determine page range
+        if page_range:
+            start_page, end_page = page_range
+        else:
+            start_page, end_page = self.schematic_pages
+
+        end_page = min(end_page, len(self.doc))
+
+        # Collect contact positions by suffix
+        contact_positions: Dict[str, List[ComponentPosition]] = {}
+
+        # Search for contact instances (.1, .2, .3, etc.)
+        for page_num in range(start_page, end_page):
+            if self._should_skip_page(page_num):
+                continue
+
+            page = self.doc[page_num]
+            text_dict = page.get_text("dict")
+
+            for block in text_dict.get("blocks", []):
+                if block.get("type") != 0:  # Only text blocks
+                    continue
+
+                for line in block.get("lines", []):
+                    for span in line.get("spans", []):
+                        text = span.get("text", "").strip()
+                        bbox = span.get("bbox", (0, 0, 0, 0))
+
+                        # Check if this is a contact instance reference
+                        match = self.CONTACT_INSTANCE_PATTERN.match(text)
+                        if match:
+                            base_tag = match.group(1)
+                            suffix = f".{match.group(2)}"
+
+                            # Check if base tag matches our device
+                            if base_tag == device_tag:
+                                position = ComponentPosition(
+                                    device_tag=text,  # Full reference (e.g., "-K1.1")
+                                    x=(bbox[0] + bbox[2]) / 2,
+                                    y=(bbox[1] + bbox[3]) / 2,
+                                    width=bbox[2] - bbox[0],
+                                    height=bbox[3] - bbox[1],
+                                    page=page_num,
+                                    confidence=1.0,
+                                    match_type="contact_instance"
+                                )
+
+                                if suffix not in contact_positions:
+                                    contact_positions[suffix] = []
+                                contact_positions[suffix].append(position)
+
+        return contact_positions
+
     def _deduplicate_positions(
         self,
         positions: List[ComponentPosition],
@@ -598,6 +695,10 @@ class ComponentPositionFinder:
 
                     # Skip cross-references (TAG:PAGE/COORDINATE format)
                     if is_cross_reference(text):
+                        continue
+
+                    # Skip contact instances (handled by find_contact_positions)
+                    if self.CONTACT_INSTANCE_PATTERN.match(text):
                         continue
 
                     # Try to match this text to a device tag
