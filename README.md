@@ -10,7 +10,11 @@ A desktop application for importing PDF wiring diagrams of industrial machines a
 - **Multi-Voltage Support**: Handle 24VDC control, 400VAC mains, and mixed circuits
 - **Diagnostic Engine**: Query with fault conditions and get troubleshooting guidance
 - **State Simulation**: See how the circuit behaves with different sensor/switch states
+- **Interfaces with the DigiKeyAPI to create a component library using retrieved parts numbers
 
+### PLANNED FEATURES
+- **Automatic wire detection
+- **Automatic wire routing
 ## Installation
 
 ```bash
@@ -73,9 +77,9 @@ mypy electrical_schematics
 
 ## Usage Workflow
 
-### Automatic Mode (DRAWER Format)
+### Automatic Mode 
 
-For DRAWER-style industrial diagrams, the application automatically:
+The application automatically:
 
 1. **Load PDF**: Open the PDF - format is auto-detected
 2. **Auto-Extract**: All devices and connections are automatically loaded:
@@ -90,9 +94,9 @@ For DRAWER-style industrial diagrams, the application automatically:
 - **BLUE** lines = 0V (reference/ground)
 - **GREEN** lines = PE (protective earth)
 
-### Manual Mode (Other PDFs)
+### Manual Mode 
 
-For non-DRAWER diagrams:
+You also have the option to manually annotate
 
 1. **Load PDF**: Open a machine wiring diagram PDF file
 2. **Annotate Components**: Click and drag to select component areas, then enter details:
