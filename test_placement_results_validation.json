@@ -1,0 +1,383 @@
+{
+  "validation_summary": {
+    "ground_truth_tags": 24,
+    "ground_truth_occurrences": 154,
+    "placed_tags": 24,
+    "placement_count": 24,
+    "matched_tags": 24,
+    "missing_tags": 0,
+    "extra_tags": 0,
+    "match_percentage": 100.0
+  },
+  "missing_tags": [],
+  "extra_tags": [],
+  "multi_page_validation": {
+    "-K1": {
+      "ground_truth_pages": [
+        7,
+        8,
+        9,
+        10,
+        13,
+        15,
+        18,
+        19,
+        20,
+        21
+      ],
+      "placed_pages": [
+        7
+      ],
+      "missing_pages": [
+        8,
+        9,
+        10,
+        13,
+        15,
+        18,
+        19,
+        20,
+        21
+      ],
+      "extra_pages": []
+    },
+    "-A1": {
+      "ground_truth_pages": [
+        7,
+        13,
+        15,
+        17,
+        18,
+        19
+      ],
+      "placed_pages": [
+        7
+      ],
+      "missing_pages": [
+        13,
+        15,
+        17,
+        18,
+        19
+      ],
+      "extra_pages": []
+    },
+    "-F4": {
+      "ground_truth_pages": [
+        7,
+        9,
+        15
+      ],
+      "placed_pages": [
+        7
+      ],
+      "missing_pages": [
+        9,
+        15
+      ],
+      "extra_pages": []
+    },
+    "-G1": {
+      "ground_truth_pages": [
+        7,
+        15
+      ],
+      "placed_pages": [
+        7
+      ],
+      "missing_pages": [
+        15
+      ],
+      "extra_pages": []
+    },
+    "-K2": {
+      "ground_truth_pages": [
+        8,
+        9,
+        18,
+        19,
+        20
+      ],
+      "placed_pages": [
+        8
+      ],
+      "missing_pages": [
+        9,
+        18,
+        19,
+        20
+      ],
+      "extra_pages": []
+    },
+    "-K3": {
+      "ground_truth_pages": [
+        8,
+        18,
+        19
+      ],
+      "placed_pages": [
+        8
+      ],
+      "missing_pages": [
+        18,
+        19
+      ],
+      "extra_pages": []
+    },
+    "-KR1": {
+      "ground_truth_pages": [
+        8,
+        18,
+        19
+      ],
+      "placed_pages": [
+        8
+      ],
+      "missing_pages": [
+        18,
+        19
+      ],
+      "extra_pages": []
+    },
+    "-U1": {
+      "ground_truth_pages": [
+        8,
+        18,
+        20
+      ],
+      "placed_pages": [
+        8
+      ],
+      "missing_pages": [
+        18,
+        20
+      ],
+      "extra_pages": []
+    },
+    "-F2": {
+      "ground_truth_pages": [
+        9,
+        13,
+        14
+      ],
+      "placed_pages": [
+        9
+      ],
+      "missing_pages": [
+        13,
+        14
+      ],
+      "extra_pages": []
+    },
+    "-F3": {
+      "ground_truth_pages": [
+        9,
+        13,
+        14
+      ],
+      "placed_pages": [
+        9
+      ],
+      "missing_pages": [
+        13,
+        14
+      ],
+      "extra_pages": []
+    },
+    "-F5": {
+      "ground_truth_pages": [
+        9,
+        15
+      ],
+      "placed_pages": [
+        9
+      ],
+      "missing_pages": [
+        15
+      ],
+      "extra_pages": []
+    },
+    "-F6": {
+      "ground_truth_pages": [
+        9,
+        15
+      ],
+      "placed_pages": [
+        9
+      ],
+      "missing_pages": [
+        15
+      ],
+      "extra_pages": []
+    },
+    "-F7": {
+      "ground_truth_pages": [
+        9,
+        21
+      ],
+      "placed_pages": [
+        9
+      ],
+      "missing_pages": [
+        21
+      ],
+      "extra_pages": []
+    }
+  },
+  "position_accuracy": {
+    "-EL1": {
+      "distance": 0.06089073061427801,
+      "page": 14,
+      "within_50pt": true,
+      "within_100pt": true
+    },
+    "-K1": {
+      "distance": 0.04349069815492182,
+      "page": 7,
+      "within_50pt": true,
+      "within_100pt": true
+    },
+    "-EL2": {
+      "distance": 0.03546632821470846,
+      "page": 14,
+      "within_50pt": true,
+      "within_100pt": true
+    },
+    "+DG-V1": {
+      "distance": 0.022688479406393576,
+      "page": 20,
+      "within_50pt": true,
+      "within_100pt": true
+    },
+    "-R2": {
+      "distance": 0.026120579727819487,
+      "page": 20,
+      "within_50pt": true,
+      "within_100pt": true
+    },
+    "-U1": {
+      "distance": 0.03894611663908061,
+      "page": 8,
+      "within_50pt": true,
+      "within_100pt": true
+    },
+    "+DG-B1": {
+      "distance": 0.051801601815661236,
+      "page": 20,
+      "within_50pt": true,
+      "within_100pt": true
+    },
+    "-F5": {
+      "distance": 0.01879094193750482,
+      "page": 9,
+      "within_50pt": true,
+      "within_100pt": true
+    },
+    "-F3": {
+      "distance": 0.04826977142457268,
+      "page": 9,
+      "within_50pt": true,
+      "within_100pt": true
+    },
+    "-K3": {
+      "distance": 0.02372527399227862,
+      "page": 8,
+      "within_50pt": true,
+      "within_100pt": true
+    },
+    "-R4": {
+      "distance": 0.029207311460824652,
+      "page": 20,
+      "within_50pt": true,
+      "within_100pt": true
+    },
+    "-F4": {
+      "distance": 0.033040231240894745,
+      "page": 7,
+      "within_50pt": true,
+      "within_100pt": true
+    },
+    "-F6": {
+      "distance": 0.04183696824805154,
+      "page": 9,
+      "within_50pt": true,
+      "within_100pt": true
+    },
+    "-G1": {
+      "distance": 0.05048955080145242,
+      "page": 7,
+      "within_50pt": true,
+      "within_100pt": true
+    },
+    "-A1": {
+      "distance": 0.04676250952239422,
+      "page": 7,
+      "within_50pt": true,
+      "within_100pt": true
+    },
+    "-F2": {
+      "distance": 0.027143729139519963,
+      "page": 9,
+      "within_50pt": true,
+      "within_100pt": true
+    },
+    "-KR1": {
+      "distance": 0.03148801004637357,
+      "page": 8,
+      "within_50pt": true,
+      "within_100pt": true
+    },
+    "-F7": {
+      "distance": 0.036878126934229025,
+      "page": 9,
+      "within_50pt": true,
+      "within_100pt": true
+    },
+    "-R1": {
+      "distance": 0.021827520258414244,
+      "page": 20,
+      "within_50pt": true,
+      "within_100pt": true
+    },
+    "-Z2": {
+      "distance": 0.03583043502621918,
+      "page": 20,
+      "within_50pt": true,
+      "within_100pt": true
+    },
+    "-K2": {
+      "distance": 0.03048583951380827,
+      "page": 8,
+      "within_50pt": true,
+      "within_100pt": true
+    },
+    "+DG-M1": {
+      "distance": 0.0377460144004736,
+      "page": 20,
+      "within_50pt": true,
+      "within_100pt": true
+    },
+    "-Z1": {
+      "distance": 0.04658755596055639,
+      "page": 20,
+      "within_50pt": true,
+      "within_100pt": true
+    },
+    "-R3": {
+      "distance": 0.05185281781334792,
+      "page": 20,
+      "within_50pt": true,
+      "within_100pt": true
+    }
+  },
+  "position_metrics": {
+    "tags_with_position_data": 24,
+    "average_distance": 0.03714029759557413,
+    "median_distance": 0.036878126934229025,
+    "max_distance": 0.06089073061427801,
+    "within_50pt": 24,
+    "within_100pt": 24,
+    "within_50pt_percentage": 100.0,
+    "within_100pt_percentage": 100.0
+  }
+}

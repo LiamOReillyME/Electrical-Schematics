@@ -16,6 +16,14 @@ from electrical_schematics.models.diagram import WiringDiagram
 from electrical_schematics.models.library_part import LibraryPart
 from electrical_schematics.models.project_component import ProjectComponent
 
+# Terminal strips/blocks
+from electrical_schematics.models.terminal_strip import (
+    TerminalStrip,
+    TerminalStripType,
+    TerminalColor,
+    TerminalPosition
+)
+
 # Legacy imports for backwards compatibility
 from electrical_schematics.models.component import Component, ComponentType
 from electrical_schematics.models.connection import Connection, Pin
@@ -36,6 +44,11 @@ __all__ = [
     # Library separation (new)
     "LibraryPart",
     "ProjectComponent",
+    # Terminal strips
+    "TerminalStrip",
+    "TerminalStripType",
+    "TerminalColor",
+    "TerminalPosition",
     # Legacy
     "Component",
     "ComponentType",

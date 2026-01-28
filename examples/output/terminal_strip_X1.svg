@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 60" width="200" height="80">
+
+        <g id="din-rail">
+            <rect x="0" y="0" width="40" height="8"
+                  fill="#C0C0C0" stroke="#808080" stroke-width="0.5"/>
+            <line x1="0" y1="2" x2="40" y2="2"
+                  stroke="#E0E0E0" stroke-width="1"/>
+        </g>
+        
+
+            <g id="terminal-body">
+                <rect x="0" y="8" width="40" height="40"
+                      fill="#808080" stroke="#404040" stroke-width="1"/>
+            </g>
+            
+<g id="position-1">
+
+            <circle cx="10.0" cy="20.0" r="6"
+                    fill="#FFD700" stroke="#B8860B" stroke-width="0.5"/>
+            
+
+            <circle cx="10.0" cy="28.0" r="4"
+                    fill="#606060" stroke="#404040" stroke-width="0.5"/>
+            <line x1="8.0" y1="28.0" x2="12.0" y2="28.0"
+                  stroke="#808080" stroke-width="0.5"/>
+            
+
+            <circle cx="10.0" cy="36.0" r="6"
+                    fill="#FFD700" stroke="#B8860B" stroke-width="0.5"/>
+            
+
+        <text x="10.0" y="56"
+              font-family="Arial, sans-serif" font-size="6"
+              text-anchor="middle" fill="#000000">1</text>
+        
+</g>
+<g id="position-2">
+
+            <circle cx="30.0" cy="20.0" r="6"
+                    fill="#FFD700" stroke="#B8860B" stroke-width="0.5"/>
+            
+
+            <circle cx="30.0" cy="28.0" r="4"
+                    fill="#606060" stroke="#404040" stroke-width="0.5"/>
+            <line x1="28.0" y1="28.0" x2="32.0" y2="28.0"
+                  stroke="#808080" stroke-width="0.5"/>
+            
+
+            <circle cx="30.0" cy="36.0" r="6"
+                    fill="#FFD700" stroke="#B8860B" stroke-width="0.5"/>
+            
+
+        <text x="30.0" y="56"
+              font-family="Arial, sans-serif" font-size="6"
+              text-anchor="middle" fill="#000000">2</text>
+        
+</g>
+
+        <g id="designation-label">
+            <text x="20.0" y="55"
+                  font-family="Arial, sans-serif" font-size="8" font-weight="bold"
+                  text-anchor="middle" fill="#000000">X1</text>
+        </g>
+        
+</svg>
