@@ -1,3 +1,5 @@
+### THIS REPO IS STILL UNDER ACTIVE DEVELOPMENT  - The Current Feature set is being debugged - This is NOT a production ready application yet!
+
 # Industrial Wiring Diagram Analyzer
 
 A desktop application for importing PDF wiring diagrams of industrial machines and providing interactive voltage flow analysis and diagnostic support. Handles 24VDC control circuits, 400VAC mains, sensor wiring, and fault diagnostics.
